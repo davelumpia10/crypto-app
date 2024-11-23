@@ -1,8 +1,11 @@
 import { Redirect, Route } from 'react-router-dom';
 import {
+  IonAlert,
   IonApp,
+  IonButton,
   IonIcon,
   IonLabel,
+  IonPage,
   IonRouterOutlet,
   IonTabBar,
   IonTabButton,
@@ -44,8 +47,30 @@ import '@ionic/react/css/palettes/dark.system.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import { useState } from 'react';
 
 setupIonicReact();
+
+export const ButtonDemo: React.FC = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  
+  return (
+    <IonPage>
+      <IonButton onClick={() => setIsOpen(true)} id="present-alert">Click Me</IonButton>
+        <IonAlert
+          isOpen={isOpen}
+          trigger="present-alert"
+          header="A Short Title Is Best"
+          subHeader="A Sub Header Is Optional"
+          message="A message should be a short, complete sentence."
+          buttons={['Action']}
+          onDidDismiss={() => setIsOpen(false)}
+        ></IonAlert>
+    </IonPage>
+  );
+
+}
+
 
 const App: React.FC = () => (
   <IonApp>
