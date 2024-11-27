@@ -1,5 +1,6 @@
 {
-    "recommendations": [
-        "ionic.ionic"
-    ]
+  "recommendations": ["ionic.ionic"],
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }

@@ -7,7 +7,10 @@ import {
   IonFooter,
   IonHeader,
   IonIcon,
+  IonInput,
+  IonItem,
   IonLabel,
+  IonList,
   IonPage,
   IonRouterOutlet,
   IonTabBar,
@@ -15,7 +18,7 @@ import {
   IonTabs,
   IonTitle,
   IonToolbar,
-  setupIonicReact
+  setupIonicReact,
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { ellipse, playCircle, square, triangle } from 'ionicons/icons';
@@ -58,61 +61,69 @@ setupIonicReact();
 
 export const ButtonDemo: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  
+
   return (
     <IonPage>
-      <IonButton onClick={() => setIsOpen(true)} id="present-alert">Click Me</IonButton>
-        <IonAlert
-          isOpen={isOpen}
-          trigger="present-alert"
-          header="A Short Title Is Best"
-          subHeader="A Sub Header Is Optional"
-          message="A message should be a short, complete sentence."
-          buttons={['Action']}
-          onDidDismiss={() => setIsOpen(false)}
-        ></IonAlert>
+      <IonButton onClick={() => setIsOpen(true)} id="present-alert">
+        Click Me
+      </IonButton>
+      <IonAlert
+        isOpen={isOpen}
+        trigger="present-alert"
+        header="A Short Title Is Best"
+        subHeader="A Sub Header Is Optional"
+        message="A message should be a short, complete sentence."
+        buttons={['Action']}
+        onDidDismiss={() => setIsOpen(false)}
+      ></IonAlert>
     </IonPage>
   );
-
-}
+};
 
 const HomePage: React.FC = () => {
+  const [totalAmount, setTotalAmount] = useState('');
+  const [fiatAmount, setFiatAmount] = useState('');
+
+  const handleTotalAmount = (event: Event) => {
+    setTotalAmount((event.target as HTMLInputElement).value);
+  };
+
+  const handleFiatAmount = (event: Event) => {
+    setFiatAmount((event.target as HTMLInputElement).value);
+  };
+
   return (
-    <IonApp>
-      <IonContent>
-        <h1>Hello World</h1>
-      </IonContent>
-    </IonApp>
-
-  )
-
-}
-
+    <>
+      <IonList>
+        <IonItem>
+          <IonInput
+            onIonInput={(event) => handleTotalAmount(event)}
+            type="number"
+            label="Total Amount"
+            placeholder="Enter amount"
+          ></IonInput>
+        </IonItem>
+        <IonItem>
+          <IonInput
+            type="number"
+            label="Total fiat combined"
+            placeholder="Enter total fiat amount"
+          ></IonInput>
+        </IonItem>
+      </IonList>
+      <IonButton>Submit</IonButton>
+    </>
+  );
+};
 
 const App: React.FC = () => (
   <IonApp>
     <IonHeader>
       <IonToolbar>
-        <IonTitle>Header</IonTitle>
+        <IonTitle>Crypto Calculator</IonTitle>
       </IonToolbar>
     </IonHeader>
-    <IonContent className='ion-padding'>
-      <h1>Content</h1>
-    </IonContent>
-    <IonReactRouter>
-    <IonTabs>
-      <IonRouterOutlet>
-        <Redirect exact path='/' to="/home" />
-        <Route path={"/home"} render={() => <HomePage/>} exact={true} />
-      </IonRouterOutlet>
-      <IonTabBar slot='bottom'>
-        <IonTabButton tab='home' href='/home'>
-          <IonIcon icon={playCircle} />
-          <IonLabel>Home</IonLabel>
-        </IonTabButton>
-      </IonTabBar>
-    </IonTabs>
-    </IonReactRouter>
+    <HomePage />
   </IonApp>
 );
 
