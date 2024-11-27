@@ -80,39 +80,70 @@ export const ButtonDemo: React.FC = () => {
   );
 };
 
+type FormData = {
+  totalAmount: string,
+  fiatAmount: string
+}
+
 const HomePage: React.FC = () => {
   const [totalAmount, setTotalAmount] = useState('');
   const [fiatAmount, setFiatAmount] = useState('');
 
+  const [result, setResult] = useState<number>();
+  const [isOpen, setIsOpen] = useState(false);
+
   const handleTotalAmount = (event: Event) => {
+    console.log((event.target as HTMLInputElement).value)
     setTotalAmount((event.target as HTMLInputElement).value);
-  };
+  }
 
   const handleFiatAmount = (event: Event) => {
+    console.log((event.target as HTMLInputElement).value)
     setFiatAmount((event.target as HTMLInputElement).value);
-  };
+  }
+
+  const calculateAverageCost = (fiatAmount: string, totalAmount: string) => {
+    let parseFiat: number = Number.parseInt(fiatAmount);
+    let parseTotalAmount: number = Number.parseInt(totalAmount);
+
+    let averageCost : number = parseTotalAmount / parseFiat;
+
+    setResult(Math.fround(averageCost));
+  }
 
   return (
-    <>
+    <IonContent>
       <IonList>
         <IonItem>
           <IonInput
             onIonInput={(event) => handleTotalAmount(event)}
-            type="number"
+            type="text"
             label="Total Amount"
             placeholder="Enter amount"
+            value={totalAmount}
           ></IonInput>
         </IonItem>
         <IonItem>
           <IonInput
-            type="number"
+            type="text"
             label="Total fiat combined"
             placeholder="Enter total fiat amount"
+            value={fiatAmount}
+            onIonInput={(event) => handleFiatAmount(event) }
           ></IonInput>
         </IonItem>
       </IonList>
-      <IonButton>Submit</IonButton>
-    </>
+      <IonButton id='calculate' type='submit' onClick={() => calculateAverageCost(fiatAmount, totalAmount) }>Submit</IonButton>
+      { result && 
+      <IonAlert
+        trigger='calculate'
+        isOpen={isOpen}
+        message={`Average Cost: ${result}`}
+        buttons={['Okay']}
+        onDidDismiss={() => setIsOpen(false)}
+      >
+      </IonAlert>  }
+    </IonContent> 
   );
 };
 
